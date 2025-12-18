@@ -38,44 +38,41 @@
 
 ```mermaid
 graph TD
-    User((User))
-    
-    subgraph "Aura Health App (Client)"
-        Orchestrator[<b>Orchestrator</b><br/>Router & State Manager]
-        
-        subgraph "Agent Swarm"
-            LiveAgent[<b>Coach Agent (Loop)</b><br/>Gemini Live (Audio/Video)]
-            AnalystAgent[<b>Analyst Agent (Sequential)</b><br/>Gemini 3.0 Pro (Thinking)]
-            GuardianAgent[<b>Guardian Agent (Parallel)</b><br/>Gemini 2.5 Flash + Tools]
-            VisionAgent[<b>Vision Agent</b><br/>Gemini 3 Pro Image]
-        end
-        
-        subgraph "Safety & Tools"
-            Haptic[Nudge Engine™<br/>(Vibration API)]
-            Geo[Geolocation API]
-        end
-    end
-    
-    subgraph "External World"
-        MapsAPI[Google Maps Platform]
-        Responders[Emergency Contacts / 911]
-    end
-
-    %% Flows
-    User <-->|Real-time A/V| LiveAgent
-    User -->|Biometrics| Orchestrator
-    Orchestrator -->|Batch JSON| AnalystAgent
-    Orchestrator -->|SOS Trigger| GuardianAgent
-    Orchestrator -->|Goal Text| VisionAgent
-    
-    GuardianAgent -->|Locate| MapsAPI
-    GuardianAgent -->|Call/Alert| Responders
-    GuardianAgent -->|Haptic Feedback| Haptic
-    
-    LiveAgent -.->|Visual Feedback| User
-    AnalystAgent -.->|Insights| User
+---
+config:
+  layout: fixed
+---
+flowchart TB
+ subgraph subGraph0["Agent Swarm"]
+        LiveAgent["<b>Coach Agent (Loop)</b><br>Gemini Live (Audio/Video)"]
+        AnalystAgent["<b>Analyst Agent (Sequential)</b><br>Gemini 3.0 Pro (Thinking)"]
+        GuardianAgent["<b>Guardian Agent (Parallel)</b><br>Gemini 2.5 Flash + Tools"]
+        VisionAgent["<b>Vision Agent</b><br>Gemini 3 Pro Image"]
+  end
+ subgraph subGraph1["Safety & Tools"]
+        Haptic["Nudge Engine™<br>(Vibration API)"]
+        Geo["Geolocation API"]
+  end
+ subgraph subGraph2["Aura Health App (Client)"]
+        Orchestrator["<b>Orchestrator</b><br>Router &amp; State Manager"]
+        subGraph0
+        subGraph1
+  end
+ subgraph subGraph3["External World"]
+        MapsAPI["Google Maps Platform"]
+        Responders["Emergency Contacts / 911"]
+  end
+    User(("User")) <-- "Real-time A/V" --> LiveAgent
+    User -- Biometrics --> Orchestrator
+    Orchestrator -- Batch JSON --> AnalystAgent
+    Orchestrator -- SOS Trigger --> GuardianAgent
+    Orchestrator -- Goal Text --> VisionAgent
+    GuardianAgent -- Locate --> MapsAPI
+    GuardianAgent -- Call/Alert --> Responders
+    GuardianAgent -- Haptic Feedback --> Haptic
+    LiveAgent -. Visual Feedback .-> User
+    AnalystAgent -. Insights .-> User
 ```
-
 ---
 
 ### 3. Key Concepts Implemented
