@@ -37,7 +37,6 @@
 **End-to-End Flow Diagram:**
 
 ```mermaid
-graph TD
 ---
 config:
   layout: fixed
